@@ -28,6 +28,9 @@ function LoginFormPage() {
       <div className="login-form-container">
         <div className="login-form-box">
           <h2>Login</h2>
+
+          {errors.general && <p className="error-message">{errors.general}</p>}
+
           <form onSubmit={handleSubmit}>
             <input
               type="text"
@@ -36,6 +39,9 @@ function LoginFormPage() {
               onChange={(e) => setCredential(e.target.value)}
               required
             />
+
+            {errors.credential && <p className="error-message">{errors.credential}</p>}
+
             <input
               type="password"
               placeholder="Password"
@@ -43,6 +49,9 @@ function LoginFormPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+
+            {errors.password && <p className="error-message">{errors.password}</p>}
+            
             <button type="submit">Log In</button>
           </form>
         </div>
