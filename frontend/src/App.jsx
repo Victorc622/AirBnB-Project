@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Outlet, createBrowserRouter, RouterProvider } from 'react-router-dom';
-import LoginFormPage from './components/LoginFormPage';
 import SignupFormPage from './components/SignupFormPage';
 import Navigation from './components/Navigation';
 import * as sessionActions from './store/session';
+import LoginFormModal from './components/LoginFormModal/LoginFormModal';
 
 function Layout() {
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ const router = createBrowserRouter([
       },
       {
         path: "login",
-        element: <LoginFormPage />
+        element: <LoginFormModal />
       },
       {
         path: "signup",

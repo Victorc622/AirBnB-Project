@@ -16,6 +16,17 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
-    'react/prop-types': 'off'
+    'react/prop-types': 'off',
   },
-}
+
+  overrides: [
+    {
+      files: [
+        'src/context/*.jsx'
+      ],
+      rules: {
+        'react-refresh/only-export-components': 'off',
+      }
+    }
+  ],
+};
