@@ -1,55 +1,33 @@
 /* Navigation.css */
 
-nav {
-    background-color: #333;
-    padding: 10px;
-  }
-  
-  nav ul {
-    list-style: none;
-    display: flex;
-    gap: 15px;
-  }
-  
-  nav ul li {
-    color: white;
-  }
-  
-  nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-  }
-  
-  .profile-dropdown {
+.profile-dropdown {
+    position: absolute;
+    right: 0;
+    top: 50px; /* Adjust as needed */
     background-color: white;
     border: 1px solid #ccc;
-    position: absolute;
-    top: 50px;
-    right: 10px;
-    display: none;
+    border-radius: 5px;
+    list-style: none;
     padding: 10px;
-    z-index: 10;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-dropdown.hidden {
+    display: none;
   }
   
   .profile-dropdown li {
-    margin-bottom: 5px;
+    padding: 5px 10px;
   }
   
-  .profile-dropdown li:last-child {
-    margin-bottom: 0;
-  }
-  
-  .profile-dropdown button {
-    background-color: red;
-    color: white;
+  .profile-dropdown li button {
+    background: none;
     border: none;
-    padding: 5px;
+    color: #007bff;
     cursor: pointer;
   }
   
-  /* Dropdown menu visibility on hover */
-  button:hover + .profile-dropdown {
-    display: block;
+  .profile-dropdown li button:hover {
+    text-decoration: underline;
   }
   
