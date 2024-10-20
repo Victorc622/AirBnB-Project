@@ -1,5 +1,3 @@
-// frontend/src/components/LoginFormModal/LoginFormModal.jsx
-
 import { useState } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch } from 'react-redux';
@@ -34,6 +32,7 @@ function LoginFormModal() {
           Username or Email
           <input
             type="text"
+            data-testid='credential-input' // Identifier
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
             required
@@ -43,6 +42,7 @@ function LoginFormModal() {
           Password
           <input
             type="password"
+            data-testid='credential-input' // Identifier
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
