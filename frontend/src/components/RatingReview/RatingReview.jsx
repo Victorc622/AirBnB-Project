@@ -1,4 +1,4 @@
-import { CiStar } from 'react-icons/gi';
+import { CiStar } from "react-icons/ci";
 
 export default function RatingReview({spot}) {
 	return (

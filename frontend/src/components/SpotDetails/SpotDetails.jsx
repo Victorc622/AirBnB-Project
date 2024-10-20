@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getSpotById } from '../../store/spots';
 import { useEffect } from 'react';
-import { CiStar } from 'react-icons/gi';
+import { CiStar } from "react-icons/ci";
 import Reviews from '../Reviews';
 import RatingReview from '../RatingReview';
 import './SpotDetails.css';

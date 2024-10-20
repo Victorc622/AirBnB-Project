@@ -17,7 +17,8 @@ export default function Spots() {
 		<div className='spots-page'>
 			<div className='spots-grid'>
 				{spotsArr?.map((spot) => (
-					<SpotTile key={`${spot.id}`} spot={spot} loggedIn={false} />
+					// <SpotTile key={`${spot.id}`} spot={spot} loggedIn={false} />
+					<h1> Hello </h1>
 				))}
 			</div>
 		</div>

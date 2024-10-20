@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { CiStar } from 'react-icons/gi';
-import { LuFlower } from 'react-icons/gi';
+import { CiStar } from "react-icons/ci";
+import { LuFlower } from "react-icons/lu";
 import { useSelector } from 'react-redux';
 import OpenModalButton from '../OpenModalButton';
 import DeleteModal from '../DeleteModal';

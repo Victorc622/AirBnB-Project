@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { CiStar } from 'react-icons/gi';
-import { LuFlower } from 'react-icons/gi';
+import { CiStar } from "react-icons/ci";
+import { LuFlower } from "react-icons/lu";
 
 export default function SpotTile(props) {
 	const { spot } = props;
