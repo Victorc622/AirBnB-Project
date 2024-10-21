@@ -7,7 +7,6 @@ import SignupFormModal from "../SignupFormModal/SignupFormModal.jsx";
 import OpenModalMenuItem from "./OpenModalMenuItem.jsx";
 import { useNavigate } from "react-router-dom";
 import "./ProfileButton.css";
-import { GiHamburgerMenu } from "react-icons/gi";
 
 function ProfileButton({ user }) {
   const navigate = useNavigate();
@@ -48,8 +47,7 @@ function ProfileButton({ user }) {
   return (
     <>
       <button className="profile-button" onClick={toggleMenu}>
-        <GiHamburgerMenu className="menu-button-icon" size={22} />
-        <FaUserCircle className="profile-button-icon" size={22} />
+        <FaUserCircle className="profile-button-icon" size={30} />
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
