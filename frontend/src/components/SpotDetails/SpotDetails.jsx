@@ -1,94 +1,89 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { getSpotById } from '../../store/spots';
-import { useEffect } from 'react';
-import { CiStar } from "react-icons/ci";
-import Reviews from '../Reviews';
-import RatingReview from '../RatingReview';
-import './SpotDetails.css';
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getSpotDetails } from "../../store/spots";
+import { useParams } from "react-router-dom";
+import SpotImages from "../SpotImages/SpotImages";
+import Reviews from "../Reviews/Reviews";
+import { IoStarSharp } from "react-icons/io5";
+import './SpotDetails.css'
 
-export default function SpotDetails() {
+
+const SpotDetails = () => {
+  const { spotId } = useParams();
+  const newSpotId = parseInt(spotId);
   const dispatch = useDispatch();
-  const { id } = useParams();
-
-  const spots = useSelector(state => state.spots)
-  const spot = spots[id];
-
-  const images = spot?.SpotImages?.filter((image) => image.preview === false);
+  const spot = useSelector((state) => state.spots.spotDetails[spotId]);
+  const reviews = useSelector((state) => state.reviews.reviews);
 
   useEffect(() => {
-    dispatch(getSpotById(id));
-  }, [dispatch, id]);
+    dispatch(getSpotDetails(newSpotId));
+  }, [dispatch, newSpotId]);
 
-  if (!spot) return <h1>No longer available.</h1>;
-  if (!images) return <h1>Loading...</h1>;
+  useEffect(() => {
+    dispatch(getSpotDetails(newSpotId));
+  }, [dispatch, newSpotId, reviews]);
 
-  const reserve = (e) => {
-    e.preventDefault();
-    alert('Feature coming soon...');
+  if (!spot) {
+    return <p>Loading...</p>;
   }
 
-	return (
-		<div className='spots-page'>
-			<div className='spot-container'>
-				<div id='spot-title'>
-					<h1>{spot.name}</h1>
-					<h3>
-						{spot.city}, {spot.state}, {spot.country}
-					</h3>
-				</div>
-				<div id='spot-images'>
-					<div id='preview-img'>
-						<img
-							id='preview'
-							src={spot.previewImage}
-							alt={spot.description}
-						/>
-					</div>
-					<div id='image-tiles'>
-						{images?.map((image) => (
-							<img
-								className='images'
-								key={image.id}
-								src={image.url}
-								alt={image.id}
-							/>
-						))}
-					</div>
-				</div>
-				<div className='spot-details'>
-					<div id='spot-info'>
-						<span id='host'>
-							Hosted by {spot?.Owner?.firstName} {spot?.Owner?.lastName}
-						</span>
-						<p>{spot.description}</p>
-					</div>
-					<div id='callout'>
-						<div id='callout-top'>
-							<div id='price'>
-								{spot.price}
-								<CiStar
-									style={{
-										color: 'teal',
-										fontSize: '1rem',
-									}}
-								/>/night
-							</div>
-							<div id='rating-reviews'>
-								<RatingReview spot={spot} />
-							</div>
-						</div>
-						<div id='reserve-button'>
-							<button id='reserve' onClick={reserve}>
-								Reserve
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div className='reviews'>
-				<Reviews spot={spot} />
-			</div>
-		</div>
-	);
-}
+  const spotDetails = {};
+  if (spot.numReviews === 1) {
+    spotDetails.numReviews = "Review";
+  } else if (spot.numReviews >= 2) {
+    spotDetails.numReviews = "Reviews";
+  }
+
+  const handleClick = () => {
+    alert("Feature coming soon");
+  };
+  console.log(spot, typeof(spot))
+  return (
+    <div className="spot-details-wrapper">
+      <div className="spot-title-header">
+        <h1 className="spot-details-title">{spot.name}</h1>
+        <p className="city-state-country">
+          {spot.city}, {spot.state}, {spot.country}
+        </p>
+      </div>
+      <SpotImages spotId={newSpotId} />
+      <div className="spot-details-info">
+        <div className="spot-details-owner-description">
+          <p className="spot-owner">
+            {`Hosted by ${spot.Owner?.firstName} ${spot.Owner?.lastName}`}
+          </p>
+          <p className="spot-description">{spot.description}</p>
+        </div>
+        <div className="booking-spot-div">
+          <div className="price-review-title">
+            <p className="book-price">{`$${spot.price} night`}</p>
+            <p className="booking-reviews">
+            <IoStarSharp />
+              {spot.numReviews 
+                ? ` ${spot.avgStarRating.toFixed(1)} · ${spot.numReviews} ${spotDetails.numReviews}` 
+                : "New"}
+            </p>
+          </div>
+          <button onClick={handleClick} className="booking-button">
+            Reserve
+          </button>
+        </div>
+      </div>
+      <div className="line-break"></div>
+      <div className="review-div">
+        <div className="review-heading">
+          <p className="review-title">
+          <IoStarSharp />
+            
+            {spot.numReviews
+              ? ` ${spot.avgStarRating.toFixed(1)} · ${spot.numReviews} ${spotDetails.numReviews}`
+              : "New"}
+          </p>
+        </div>
+        <Reviews spotId={newSpotId} />
+      </div>
+    </div>
+  );
+};
+
+export default SpotDetails;

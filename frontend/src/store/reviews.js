@@ -1,90 +1,85 @@
-import { csrfFetch } from './csrf';
+import { csrfFetch } from "./csrf";
 
-const GET_REVIEWS = 'reviews/getReviews';
-const CREATE_REVIEW = 'reviews/createReview';
-const DELETE_REVIEW = 'reviews/deleteReview'
+const GET_ALL_REVIEWS = 'reviews/GET_ALL_REVIEWS';
+const ADD_REVIEW = 'reviews/ADD_REVIEW';
+const DELETE_REVIEW = 'reviews/DELETE_REVIEW';
 
-const getReviews = (payload) => {
-  return {
-    type: GET_REVIEWS,
-    payload
-  }
-}
+export const getReviews = (reviews) => {
+    return {
+        type: GET_ALL_REVIEWS,
+        payload: reviews,
+    }
+};
 
-const createReview = (payload) => {
-  return {
-    type: CREATE_REVIEW,
-    payload
-  }
-}
+export const addReview = (review) => {
+    return {
+        type: ADD_REVIEW,
+        payload: review,
+    }
+};
 
-const deleteReview = (payload) => {
-  return {
-    type: DELETE_REVIEW,
-    payload
-  }
-}
+export const deleteReview = (reviewId) => {
+    return {
+        type: DELETE_REVIEW,
+        reviewId,
+    }
+};
 
 export const getAllReviews = (spotId) => async (dispatch) => {
-  const res = await csrfFetch(`/api/spots/${spotId}/reviews`)
-  if (res.ok) {
-    const data = await res.json();
-    dispatch(getReviews(data.Reviews))
-    return data;
-  }
-}
+    const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
+    if (response.ok) {
+        const reviews = await response.json();
+        dispatch(getReviews(reviews.Reviews));
+        return reviews;
+    }
+};
 
-export const makeReview = (user, spotId, review) => async (dispatch) => {
-	const res = await csrfFetch(`/api/spots/${spotId}/reviews`, {
-		method: 'POST',
+export const addAReview = (review, spotId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
+        method: "POST", 
+        headers: {
+			'Content-Type': 'application/json',
+		},
 		body: JSON.stringify(review),
-		headers: { 'Content-Type': 'application/json' },
-	});
-	if (res.ok) {
-		const review = await res.json();
-		review.User = user;
-		dispatch(createReview(review));
-		return review;
-	}
+    })
+    if (response.ok) {
+        const review = await response.json();
+        dispatch(addReview(review));
+        return review;
+    }
 };
 
-export const destroyReview = (reviewId) => async (dispatch) => {
-	const res = await csrfFetch(`/api/reviews/${reviewId}`, {
-		method: 'DELETE',
-	});
-	if (res.ok) {
-		const deleted = await res.json();
-		dispatch(deleteReview(reviewId));
-		return deleted;
-	}
+export const deleteAReview = (reviewId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/reviews/${reviewId}`, {
+        method: "DELETE", 
+    })
+    if (response.ok) {
+        dispatch(deleteReview(reviewId))
+    }
 };
 
-const initialState = {};
+const initialState = { reviews: [] };
 
-export default function reviewsReducer(state = initialState, action) {
-	switch (action.type) {
-		case GET_REVIEWS: {
-			const newState = { ...state };
-			action.payload.forEach((review) => {
-				if (state[review.id]) {
-					newState[review.id] = { ...state[review.id], ...review };
-				} else {
-					newState[review.id] = review;
-				}
-			});
-			return newState;
-		}
-		case CREATE_REVIEW: {
-			const newState = { ...state };
-			newState[action.payload.id] = action.payload;
-			return newState;
-		}
-		case DELETE_REVIEW: {
-			const newState = { ...state };
-			delete newState[action.payload];
-			return newState;
-		}
-		default:
-			return state;
-	}
+const reviewReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case GET_ALL_REVIEWS: {
+            return { ...state, reviews: action.payload };
+        }
+        case ADD_REVIEW: {
+            return { ...state, reviews: [...state.reviews, action.payload] };
+        }
+        case DELETE_REVIEW: {
+            return {
+                ...state, 
+                reviews: state.reviews.filter(
+                    (review) => {
+                         return review.id !== action.reviewId
+                    }
+                ),
+            }
+        }
+        default:
+            return state;
+    }
 }
+export default reviewReducer;

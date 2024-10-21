@@ -1,10 +1,10 @@
-import { useModal } from '../../context/Modal';
+import { useModal } from "../../context/Modal.jsx";
 
 function OpenModalButton({
   modalComponent,
   buttonText,
   onButtonClick,
-  onModalClose
+  onModalClose,
 }) {
   const { setModalContent, setOnModalClose } = useModal();
 

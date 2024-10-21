@@ -1,47 +1,50 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
-import OpenModalButton from '../OpenModalButton';
-import LoginFormModal from '../LoginFormModal';
-import SignupFormModal from '../SignupFormModal';
 import './Navigation.css';
 
 function Navigation({ isLoaded }) {
-  const sessionUser = useSelector((state) => state.session.user);
+  const navigate = useNavigate();
+  const sessionUser = useSelector(state => state.session.user);
 
-  let sessionLinks;
-  if (sessionUser) {
-    sessionLinks = (
-      <li>
-        <ProfileButton user={sessionUser} />
-      </li>
-    );
-  } else {
-    sessionLinks = (
-      <>
-        <li>
-          <OpenModalButton
-            buttonText="Log In"
-            modalComponent={<LoginFormModal />}
-          />
-        </li>
-        <li>
-          <OpenModalButton
-            buttonText="Sign Up"
-            modalComponent={<SignupFormModal />}
-          />
-        </li>
-      </>
-    );
+  const handleClick = () => {
+    navigate('/spots/new');
   }
 
   return (
-    <ul>
-      <li>
-        <NavLink to="/">Home</NavLink>
-      </li>
-      {isLoaded && sessionLinks}
-    </ul>
+    <div className='navigation-div'>
+      <ul className='navigation-ul'>
+        <li className='nav-logo'>
+          <NavLink
+            to='/'
+            className='navigation-logo'
+          >
+            <img 
+              src='/Images/Icon.jpg'
+              className='navigation-logo'
+            />
+            FantasyStays
+          </NavLink>
+        </li>
+        <div className='nav-button-div'>
+          {sessionUser ? (
+            <button
+              onClick={handleClick}
+              className='create-spot-button'
+            >
+              Create a New Spot
+            </button>
+          ) : (
+            ''
+          )}
+          {isLoaded && (
+            <li>
+              <ProfileButton user={sessionUser} />
+            </li>
+          )}
+        </div>
+      </ul>
+    </div>
   );
 }
 

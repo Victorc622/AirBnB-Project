@@ -1,152 +1,223 @@
-import { csrfFetch } from './csrf';
+import { csrfFetch } from "./csrf";
 
-const GET_SPOTS = 'spots/getSpots';
-const GET_SPOT = 'spot/getSpot';
-const UPDATE_SPOT = 'spots/updateSpot';
-const CREATE_SPOT = 'spots/createSpot';
-const DELETE_SPOT = 'spots/deleteSpot';
+const ALL_SPOTS = "spots/ALL_SPOTS";
+const SPOT_DETAILS = "spots/SPOT_DETAILS";
+const NEW_SPOT = "spots/NEW_SPOT";
+const ADD_SPOT_IMAGE = "spots/ADD_SPOT_IMAGE";
+const GET_USER_SPOTS = "spots/GET_USER_SPOTS";
+const UPDATE_SPOT = "spots/UPDATE_SPOT";
+const DELETE_SPOT = "spots/DELETE_SPOT";
+const CLEAR_SPOT_STATE = "spots/CLEAR_SPOT_STATE";
 
-const getSpots = (payload) => {
-	return {
-		type: GET_SPOTS,
-		payload,
-	};
+export const allSpots = (payload) => ({
+  type: ALL_SPOTS,
+  payload,
+});
+
+export const spotDetails = (payload) => ({
+  type: SPOT_DETAILS,
+  payload,
+});
+
+export const userSpots = (spots) => ({
+  type: GET_USER_SPOTS,
+  payload: spots,
+});
+
+export const newSpot = (spot) => {
+  return {
+    type: NEW_SPOT,
+    payload: spot,
+  };
+};
+
+export const updateSpot = (spot) => ({
+  type: UPDATE_SPOT,
+  payload: spot,
+});
+
+export const deleteSpot = (spotId) => ({
+  type: DELETE_SPOT,
+  spotId,
+});
+
+export const addImage = (image) => ({
+  type: ADD_SPOT_IMAGE,
+  image,
+});
+
+export const clearSpotState = () => {
+  return {
+    type: CLEAR_SPOT_STATE,
+  };
 };
 
 export const getAllSpots = () => async (dispatch) => {
-	const res = await csrfFetch('/api/spots');
-	if (res.ok) {
-		const data = await res.json();
-		dispatch(getSpots(data.Spots));
-		return data;
-	}
+  const response = await fetch("/api/spots");
+  if (response.ok) {
+    const payload = await response.json();
+    dispatch(allSpots(payload));
+  }
 };
 
-const getSpot = (payload) => {
-	return {
-		type: GET_SPOT,
-		payload,
-	};
+export const getSpotDetails = (spotId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/spots/${spotId}`);
+  if (response.ok) {
+    const spot = await response.json();
+    dispatch(spotDetails(spot));
+    return spot;
+  }
 };
 
-export const getSpotById = (spotId) => async (dispatch) => {
-	const res = await csrfFetch(`/api/spots/${spotId}`);
-	if (res.ok) {
-		const spot = await res.json();
-		dispatch(getSpot(spot));
-		return spot;
-	}
+export const getUserSpots = () => async (dispatch) => {
+  const response = await csrfFetch("/api/spots/current");
+  if (response.ok) {
+    const spots = await response.json();
+    dispatch(userSpots(spots));
+  }
 };
 
-const updateSpot = (payload) => {
-	return {
-		type: UPDATE_SPOT,
-		payload,
-	};
+export const createNewSpot = (spot, navigate) => async () => {
+  const response = await csrfFetch(`/api/spots`, {
+    method: "POST",
+    body: JSON.stringify(spot),
+  });
+  if (response.ok) {
+    const addSpot = await response.json();
+    console.log(addSpot);
+    navigate(`/spots/${addSpot.id}`);
+    return addSpot;
+  } else {
+    const error = await response.json();
+    throw error;
+  }
 };
 
-export const editSpot = (spotId, spot) => async (dispatch) => {
-	const res = await csrfFetch(`/api/spots/${spotId}`, {
-		method: 'PUT',
-		body: JSON.stringify(spot),
-		headers: { 'Content-Type': 'application/json' },
-	});
-	if (res.ok) {
-		const updatedSpot = await res.json();
-		dispatch(updateSpot(updatedSpot));
-		return updatedSpot;
-	}
+export const addImageToSpot = (spotId, image) => async (dispatch) => {
+  const response = await csrfFetch(`/api/spots/${spotId}/images`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(image),
+  });
+
+  if (response.ok) {
+    const newImage = await response.json();
+    dispatch(addImage(newImage));
+    return newImage;
+  }
 };
 
-const createSpot = (payload) => {
-	return {
-		type: CREATE_SPOT,
-		payload,
-	};
+export const updateASpot = (spotId, spotInfo) => async (dispatch) => {
+  const response = await csrfFetch(`/api/spots/${spotId}`, {
+    method: "PUT",
+    headers: {
+    },
+    body: JSON.stringify(spotInfo),
+  });
+  if (response.ok) {
+    const updatedSpot = await response.json();
+    dispatch(updateSpot(updatedSpot));
+    return updatedSpot;
+  } else if (!response.ok) {
+    console.log("some error happened");
+  }
 };
 
-export const makeSpot = (spot) => async (dispatch) => {
-	const res = await csrfFetch('/api/spots', {
-		method: 'POST',
-		body: JSON.stringify(spot),
-		headers: { 'Content-Type': 'application/json' },
-	});
-	if (res.ok) {
-		const newSpot = await res.json();
-		dispatch(createSpot(newSpot));
-		return newSpot;
-	}
+export const deleteASpot = (spotId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/spots/${spotId}`, {
+    method: "DELETE",
+  });
+  if (response.ok) {
+    dispatch(deleteSpot(spotId));
+  }
 };
 
-const deleteSpot = (payload) => {
-	return {
-		type: DELETE_SPOT,
-		payload,
-	};
+const initialState = {
+  allSpots: {},
+  spotDetails: {},
+  userSpots: [],
 };
-
-export const destroySpot = (spotId) => async (dispatch) => {
-	const res = await csrfFetch(`/api/spots/${spotId}`, {
-		method: 'DELETE',
-	});
-	if (res.ok) {
-		const spot = await res.json();
-		dispatch(deleteSpot(spotId));
-		return spot;
-	}
-};
-
-const initialState = {};
 
 const spotsReducer = (state = initialState, action) => {
-	switch (action.type) {
-		case GET_SPOTS: {
-			const newState = { ...state };
-			action.payload.forEach((spot) => {
-				if (state[spot.id]) {
-					newState[spot.id] = { ...state[spot.id], ...spot };
-				} else {
-					newState[spot.id] = spot;
-				}
-			});
-			return newState;
-		}
-		case GET_SPOT: {
-			const newState = { ...state };
-			if (state[action.payload.id]) {
-				newState[action.payload.id] = {
-					...state[action.payload.id],
-					...action.payload,
-				};
-			} else {
-				newState[action.payload.id] = action.payload;
-				newState[action.payload.id].previewImage = newState[
-					action.payload.id
-				].SpotImages.find((image) => image.preview).url;
-			}
-			return newState;
-		}
-		case CREATE_SPOT: {
-			const newState = { ...state };
-			newState[action.payload.id] = action.payload;
-			return newState;
-		}
-		case UPDATE_SPOT: {
-			const newState = { ...state };
-			newState[action.payload.id] = {
-				...newState[action.payload.id],
-				...action.payload,
-			};
-			return newState;
-		}
-		case DELETE_SPOT: {
-			const newState = { ...state };
-			delete newState[action.payload];
-			return newState;
-		}
-		default:
-			return state;
-	}
+  switch (action.type) {
+    case ALL_SPOTS: {
+      const newState = { ...state, allSpots: {} };
+      const spotsArray = action.payload.Spots;
+      spotsArray.forEach((spot) => {
+        newState.allSpots[spot.id] = spot;
+      });
+      return newState;
+    }
+    case SPOT_DETAILS: {
+      return {
+        ...state,
+        spotDetails: {
+          ...state.spotDetails,
+          [action.payload.id]: action.payload,
+        },
+      };
+    }
+    case NEW_SPOT: {
+      const newState = {
+        allSpots: {
+          [action.payload.id]: action.payload,
+          ...state.allSpots,
+        },
+        spotDetails: {
+          ...state.spotDetails,
+          [action.payload.id]: action.payload,
+        },
+      };
+      return newState;
+    }
+    case UPDATE_SPOT: {
+      const newState = {
+        ...state,
+        allSpots: {
+          ...state.allSpots,
+          [action.payload.id]: action.payload,
+        },
+        spotDetails: {
+          ...state.spotDetails,
+          [action.payload.id]: action.payload,
+        },
+        userSpots: state.userSpots.map((spot) =>
+          spot.id === action.payload.id ? action.payload : spot
+        ),
+      };
+      return newState;
+    }
+    case DELETE_SPOT: {
+      const newState = { ...state };
+      delete newState.allSpots[action.spotId];
+      newState.userSpots = newState.userSpots.filter(
+        (spot) => spot.id !== action.spotId
+      );
+      delete newState.spotDetails[action.spotId];
+      return newState;
+    }
+    case ADD_SPOT_IMAGE: {
+      const newState = { ...state };
+      const spot = newState.spotDetails[action.image.spotId];
+      if (spot) {
+        spot.images = spot.images || [];
+        spot.images.push(action.image);
+      }
+      return newState;
+    }
+    case GET_USER_SPOTS: {
+      return {
+        ...state,
+        userSpots: action.payload.Spots,
+      };
+    }
+    case CLEAR_SPOT_STATE:
+      return { ...initialState };
+    default:
+      return state;
+  }
 };
 
 export default spotsReducer;
