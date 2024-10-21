@@ -18,17 +18,29 @@ h1 {
 	font-size: 1.8rem;
 	margin-bottom: 1.5rem;
 	font-family: var(--ff-headers);
-    padding-bottom: 25px;
+	padding-bottom: 25px;
 }
 
 .login-form {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	width: 125%;
+	width: 100%;
 	gap: 1.5rem;
     padding-right: 12px;
     padding-left: 12px;
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+legend {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
 }
 
 label {
@@ -37,9 +49,10 @@ label {
 	font-family: var(--ff-headers); 
 	display: flex;
 	flex-direction: column;
+	margin-bottom: 0.5rem;
 }
 
-input {
+input:not([type="checkbox"]) {
 	width: 100%;
 	padding: 0.5rem;
 	border: 2px solid #000;
@@ -52,37 +65,21 @@ input {
 	box-sizing: border-box;
 }
 
-label {
-	width: 100%;
-	padding: 0.5rem;
-	background-color: #fff;
-	color: #000;
-	font-size: 1rem;
-	font-family: var(--ff-headers);
-	transition: all 0.3s ease;
-	box-sizing: border-box;
-	padding-bottom: 0px;
-	padding-top: 0px;
-}
-
 input:focus {
 	border-color: #000;
 	outline: none;
-	box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 0 6px rgba
 }
 
 .error-message {
 	color: red;
 	font-size: 0.9rem;
 	font-family: var(--ff-headers);
+	margin-bottom: 0.5rem;
 }
 
 .login-button {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	width: 50%;
-	padding: 0.75rem;
+	padding: 0.75rem 1rem;
 	border: 2px solid #000;
 	border-radius: 6px;
 	background-color: #000;
@@ -105,4 +102,10 @@ input:focus {
 	border-color: black;
 	cursor: not-allowed;
 	box-shadow: none;
+}
+
+@media (max-width: 480px) {
+  .login-form {
+    width: 90%;
+  }
 }
