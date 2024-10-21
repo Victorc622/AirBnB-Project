@@ -17,36 +17,7 @@ const demoReviewImages = [
       { url: "review2_image2.png" },
       { url: "review2_image3.png" }
   ]},
-  { reviewId: 3, images: [
-      { url: "review3_image1.png" }
-  ]},
-  { reviewId: 4, images: [
-      { url: "review4_image1.png" },
-      { url: "review4_image2.png" },
-      { url: "review4_image3.png" },
-      { url: "review4_image4.png" }
-  ]},
-  { reviewId: 5, images: [
-      { url: "review5_image1.png" },
-      { url: "review5_image2.png" }
-  ]},
-  { reviewId: 6, images: [
-      { url: "review6_image1.png" }
-  ]},
-  { reviewId: 7, images: [
-      { url: "review7_image1.png" },
-      { url: "review7_image2.png" }
-  ]},
-  { reviewId: 8, images: [
-      { url: "review8_image1.png" },
-      { url: "review8_image2.png" },
-      { url: "review8_image3.png" },
-      { url: "review8_image4.png" }
-  ]},
-  { reviewId: 9, images: [
-      { url: "review9_image1.png" },
-      { url: "review9_image2.png" }
-  ]}
+  
 ];
 
 
@@ -85,8 +56,6 @@ module.exports = {
         ReviewImage.destroy({
           where: {
             reviewId: reviewImage.reviewId,
-            // url: image.url,
-            // preview: image.preview || false
           }
         });
       }

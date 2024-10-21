@@ -27,22 +27,11 @@ module.exports = {
     },
     {
       spotId: 2,
-      userId: 3,
+      userId: 1,
       startDate: "2025-01-15",
       endDate: "2025-01-18"
     },
-    {
-      spotId: 3,
-      userId: 1,
-      startDate: "2025-03-05",
-      endDate: "2025-03-10"
-    },
-    {
-      spotId: 4,
-      userId: 2,
-      startDate: "2025-04-01",
-      endDate: "2025-04-05"
-    }
+  
   ], { validate: true });
   },
 
@@ -55,7 +44,7 @@ module.exports = {
      */
     options.tableName = 'Bookings';
     return queryInterface.bulkDelete(options, {
-      spotId: [1, 2, 3, 4]
+      spotId: [1, 2,]
     }, {});
   }
 };

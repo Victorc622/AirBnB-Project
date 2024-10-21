@@ -17,12 +17,14 @@ module.exports = (sequelize, DataTypes) => {
       // Spot has many Reviews
       Spot.hasMany(models.Review, {
         foreignKey: 'spotId', 
+        as: 'Reviews',
         onDelete: 'CASCADE',
         hooks: true,
       });
       // Spot has many Spot Images
       Spot.hasMany(models.SpotImage, {
         foreignKey: 'spotId',
+        as: 'SpotImages',
         onDelete: 'CASCADE',
         hooks: true,
       });
@@ -60,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     lat: {
       type: DataTypes.FLOAT,
-      allowNull: false, 
+      allowNull: true, 
       validate: {
         min: -90,
         max: 90
@@ -68,7 +70,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     lng: {
       type: DataTypes.FLOAT,
-      allowNull: false,
+      allowNull: true,
       validate: {
         min: -180,
         max: 180
