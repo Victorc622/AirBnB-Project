@@ -80,7 +80,6 @@ export const NewSpot = () => {
       <form className="create-spot-form" action="POST" onSubmit={handleSubmit}>
         <div className="create-spot-heading">
           <h2>Create a New Spot</h2>
-          <h3>Where&apos;s your place located?</h3>
           <p>
             Guests will only get your exact address once they&apos;ve booked a
             reservation.
@@ -142,15 +141,10 @@ export const NewSpot = () => {
         <div className="from-description">
           <div className="form-headers">
             <h3>Describe your place to guests</h3>
-            <p>
-              Mention the best features of your space, any special amenitites
-              like fast wifi or parking, and what you love about the
-              neighborhood.
-            </p>
           </div>
           <textarea
             className="form-textarea"
-            placeholder="Please write at least 30 characters"
+            placeholder="Enter description here"
             id="description"
             value={formInfo.description}
             onChange={handleChange}
@@ -162,11 +156,7 @@ export const NewSpot = () => {
         <div className="line-break"></div>
         <div className="form-title-container">
           <div className="form-headers">
-            <h3>Create a title for your spot</h3>
-            <p>
-              Catch guests&apos; attention with a spot title that highlights what
-              makes your place special.
-            </p>
+            <h3>Name your spot</h3>
           </div>
           <input
             className="input-title"
@@ -183,11 +173,7 @@ export const NewSpot = () => {
         <div className="line-break"></div>
         <div className="form-price-container">
           <div className="form-headers">
-            <h3>Set a base price for your spot</h3>
-            <p>
-              Competitive pricing can help your listing stand out and rank
-              higher in search results.
-            </p>
+            <h3>Set a price</h3>
           </div>
           <label>
             $
@@ -207,8 +193,7 @@ export const NewSpot = () => {
         <div className="line-break"></div>
         <div className="image-inputs-container">
           <div className="form-headers">
-            <h3>Liven up your spot with photos</h3>
-            <p>Submit a link to at least one photo to publish your spot.</p>
+            <h3>Add some photos</h3>
           </div>
           <input
             placeholder="Image URL"
